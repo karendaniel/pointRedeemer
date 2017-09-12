@@ -4,33 +4,32 @@ $(function() {
 
 		buttonClicked : function() {
 
-			var showPoint = 'http://192.168.1.116:8080/IDoSpaPoints/api/v1/showPoint';
-			var redeemPoint = 'http://192.168.1.116:8080/IDoSpaPoints/api/v1/redeemPoints';
-
 			this.getUserData(function(userData) {
 
-			var data = null;
-			var token = '25dcc06cf923347978248f047cb58aca';
-				//showPoint
-				pointRedeemer.fireAjax('getUserPoints', {
-					'token': token,
-					'url': showPoint,
-					'userData' : userData 
-				}, function(result) {
-					
-					console.debug(result);
+			var ajaxData = {
+				'token': '25dcc06cf923347978248f047cb58aca',
+				'userData': userData
+			};
+			//showPoint
+			ajaxData['url'] = pointRedeemer.getURL()+'showPoint';
 
-					//redeemPoints
-					pointRedeemer.fireAjax('redeemUserPoints', {
-					'token': token,
-					'url': redeemPoint,
-					'userData' : userData 
-					}, function(result) {
-						console.debug(result);
-					});
+			pointRedeemer.fireAjax('getUserPoints',ajaxData, function(result) {
+				
+				console.debug(result);
+				ajaxData['url'] = pointRedeemer.getURL()+'redeemPoints';
+
+				//redeemPoints
+				pointRedeemer.fireAjax('redeemUserPoints',ajaxData, function(result) {
+					console.debug(result);
 				});
 			});
+			});
 
+		},
+
+		getURL: function() {
+
+			return 'http://192.168.1.116:8080/IDoSpaPoints/api/v1/';
 		},
 
 		getUserData: function(callback) {
@@ -41,7 +40,7 @@ $(function() {
 		},
 
 		fireAjax: function(actionString, data, callback) {
-			
+
 			$.ajax({
 			 	url: pointredeemerButton_ajax.ajax_url,
 			 	data: {
@@ -61,6 +60,5 @@ $(function() {
 	$('#pointredeemerButton').on('click.redeemButton', function() {
 		pointRedeemer.buttonClicked();
 	});
-
 	
 });

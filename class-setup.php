@@ -3,7 +3,8 @@ namespace PointRedeemer;
 
 class PR_Setup
 {
-	public function __construct() {
+	public function __construct()
+	{
 	
 		add_action('admin_menu', array($this, 'adminToolbarmenu'));
 		add_shortcode('pointredeemerButton', array($this, 'pointredeemerButton'));
@@ -37,7 +38,7 @@ class PR_Setup
 	public function pointredeemerButton()
 	{
 		?>
-			<input type="button" name="pointredeemerButton" value="Redeem Point" id="pointredeemerButton">
+			<input type="button" name="pointredeemerButton" value="REDEEM POINT" id="pointredeemerButton">
 		<?php
 	}
 
@@ -49,20 +50,20 @@ class PR_Setup
 
 	public function getCurrentUserData()
 	{
-
 		$currentUserData = $this->outputJSON(wp_get_current_user());
 		echo $currentUserData;
 		wp_die();
 	}
 
-	public function getUserPoints() {
+	public function getUserPoints()
+	{
 
 		$url = $_POST['data']['url'];
 		$user = $_POST['data']['userData'];
 		$token = $_POST['data']['token'];
 		$users = array('currency'=> 'MYR','users' => $user);
 		
-		$result = $this->fireCurl(
+		$result = $this->fireCURL(
 			$url,
 			array(
 				'token' => $token,
@@ -72,47 +73,47 @@ class PR_Setup
 		wp_die();
 	}
 
-	public function redeemUserPoints() {
+	public function redeemUserPoints()
+	{
 
 		$url = $_POST['data']['url'];
 		$user = $_POST['data']['userData'];
 		$token = $_POST['data']['token'];
 		$users = array('currency'=> 'MYR','users' => $user);
 
-		$result = $this->fireCurl(
+		$result = $this->fireCURL(
 			$url, 
 			array(
 				'token' => $token,
 				'users' => json_encode($users),
-				'redeem' => 15));
+				'redeem' => 10));
 
 		echo $result;
 		wp_die();
 	}
 
-	public function fireCurl($url, $fieldArray)
+	public function fireCURL($url, $fieldArray)
 	{
 		$opts = array(
-        CURLOPT_CONNECTTIMEOUT => 10,
-        CURLOPT_RETURNTRANSFER => true,
-        CURLOPT_TIMEOUT => 60,
-        CURLOPT_USERAGENT => 'My-Wordpress-Observer',
-        CURLOPT_SSL_VERIFYPEER => False,
-        CURLOPT_HTTPHEADER => array('Accept: application/json'),
-        CURLOPT_URL => $url,
-        CURLOPT_POSTFIELDS => $fieldArray
-	    );
+			CURLOPT_CONNECTTIMEOUT => 10,
+			CURLOPT_RETURNTRANSFER => true,
+			CURLOPT_TIMEOUT => 60,
+			CURLOPT_USERAGENT => 'My-Wordpress-Observer',
+			CURLOPT_SSL_VERIFYPEER => False,
+			CURLOPT_HTTPHEADER => array('Accept: application/json'),
+			CURLOPT_URL => $url,
+			CURLOPT_POSTFIELDS => $fieldArray
+		);
 
-	    $ch = curl_init();
-	    curl_setopt_array($ch, $opts);
-	    $result = curl_exec($ch);
+		$ch = curl_init();
+		curl_setopt_array($ch, $opts);
+		$result = curl_exec($ch);
 
-	    return $result;
+		return $result;
 	}
 
 	public function outputJSON($data)
 	{
-
 		header("Content-type:application/json");
 		return  json_encode($data->data);
 	}
@@ -138,7 +139,7 @@ class PR_Setup
 			'pointredeemerButton-js',
 			'pointredeemerButton_ajax',
 			 array(
-			 	'ajax_url' => admin_url('admin-ajax.php'))
+				'ajax_url' => admin_url('admin-ajax.php'))
 			 );
 	}
 }
