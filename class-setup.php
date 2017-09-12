@@ -9,6 +9,10 @@ class PR_Setup
 		add_shortcode('pointredeemerButton', array($this, 'pointredeemerButton'));
 		add_action('wp_enqueue_scripts', array($this, 'PointRedeemerScript'));
 		add_action('wp_ajax_getCurrentUserData', array($this, 'getCurrentUserData'));
+		add_action('wp_ajax_getUserPoints', array($this, 'getUserPoints'));
+		add_action('wp_ajax_redeemUserPoints', array($this, 'redeemUserPoints'));
+
+
 	}
 
 	public function adminToolbarmenu()
@@ -52,11 +56,69 @@ class PR_Setup
 		wp_die();
 	}
 
+	public function getUserPoints() {
+
+		$url = $_POST['data']['url'];
+		$user = $_POST['data']['userData'];
+		$token = $_POST['data']['token'];
+		$users = array('currency'=> 'MYR','users' => $user);
+
+		$opts = array(
+        CURLOPT_CONNECTTIMEOUT => 10,
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_TIMEOUT => 60,
+        CURLOPT_USERAGENT => 'My-Wordpress-Observer',
+        CURLOPT_SSL_VERIFYPEER => False,
+        CURLOPT_HTTPHEADER => array('Accept: application/json'),
+        CURLOPT_URL => $url,
+        CURLOPT_POSTFIELDS => array('token' => $token, 'users' => json_encode($users)),
+	    );
+
+	    $ch = curl_init();
+	    curl_setopt_array($ch, $opts);
+	    $result = curl_exec($ch);
+
+		echo $result;
+		wp_die();
+	}
+
+	public function redeemUserPoints() {
+
+		$url = $_POST['data']['url'];
+		$user = $_POST['data']['userData'];
+		$token = $_POST['data']['token'];
+		$users = array('currency'=> 'MYR','users' => $user);
+
+		$opts = array(
+        CURLOPT_CONNECTTIMEOUT => 10,
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_TIMEOUT => 60,
+        CURLOPT_USERAGENT => 'My-Wordpress-Observer',
+        CURLOPT_SSL_VERIFYPEER => False,
+        CURLOPT_HTTPHEADER => array('Accept: application/json'),
+        CURLOPT_URL => $url,
+        CURLOPT_POSTFIELDS => array('token' => $token, 'users' => json_encode($users), 'redeem' => 15),
+	    );
+
+	    $ch = curl_init();
+	    curl_setopt_array($ch, $opts);
+	    $result = curl_exec($ch);
+
+		echo $result;
+		wp_die();
+	}
+
 	public function outputJSON($data)
 	{
 
 		header("Content-type:application/json");
 		return  json_encode($data->data);
+	}
+	public function outputJSON2($data)
+	{
+
+		header("Content-type:application/json");
+		return  json_encode($data);
 	}
 
 	public function PointRedeemerScript()
