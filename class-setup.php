@@ -61,9 +61,12 @@ class PR_Setup
 		$user = $_POST['data']['userData'];
 		$token = $_POST['data']['token'];
 		$users = array('currency'=> 'MYR','users' => $user);
-
 		
-		$result = $this->fireCurl($url, array('token' => $token, 'users' => json_encode($users)));
+		$result = $this->fireCurl(
+			$url,
+			array(
+				'token' => $token,
+				'users' => json_encode($users)));
 
 		echo $result;
 		wp_die();
@@ -76,7 +79,12 @@ class PR_Setup
 		$token = $_POST['data']['token'];
 		$users = array('currency'=> 'MYR','users' => $user);
 
-		$result = $this->fireCurl($url, array('token' => $token, 'users' => json_encode($users), 'redeem' => 15));
+		$result = $this->fireCurl(
+			$url, 
+			array(
+				'token' => $token,
+				'users' => json_encode($users),
+				'redeem' => 15));
 
 		echo $result;
 		wp_die();
@@ -92,7 +100,7 @@ class PR_Setup
         CURLOPT_SSL_VERIFYPEER => False,
         CURLOPT_HTTPHEADER => array('Accept: application/json'),
         CURLOPT_URL => $url,
-        CURLOPT_POSTFIELDS => $fieldArray,
+        CURLOPT_POSTFIELDS => $fieldArray
 	    );
 
 	    $ch = curl_init();
@@ -112,8 +120,20 @@ class PR_Setup
 	public function PointRedeemerScript()
 	{
 
-		wp_enqueue_script('jquery-redeemer', 'https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js', array(), null, true);
-		wp_enqueue_script('pointredeemerButton-js', plugin_dir_url(__FILE__).'js/pointredeemerButton-script.js', array('jquery-redeemer'), null, false);
+		wp_enqueue_script(
+			'jquery-redeemer',
+			'https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js',
+			 array(),
+			 null,
+			 true);
+
+		wp_enqueue_script(
+			'pointredeemerButton-js',
+			 plugin_dir_url(__FILE__).'js/pointredeemerButton-script.js',
+			 array('jquery-redeemer'),
+			 null,
+			 false);
+
 		wp_localize_script(
 			'pointredeemerButton-js',
 			'pointredeemerButton_ajax',
