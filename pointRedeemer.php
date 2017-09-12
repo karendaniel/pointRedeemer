@@ -50,5 +50,4 @@ function initPlugin()
 {
 	$setup = new Setup;
 
-	add_action('admin_menu', array($setup, 'adminToolbarmenu'));
 }
