@@ -40,22 +40,6 @@ $(function() {
 			});
 		},
 
-		fireJasonp: function() {
-
-			$.ajax({
-		        type: 'GET',
-		        dataType: 'jsonp',
-		        data: {},
-		        url: "http://point.1s.my/api/v1/showPoint?token=25dcc06cf923347978248f047cb58aca&current_user="+userData+"&callback=?",
-		        error: function (jqXHR, textStatus, errorThrown) {
-		            console.log(jqXHR)
-		        },
-		        success: function (msg) {
-		            console.log(msg);
-		        }
-		    });
-		},
-
 		fireAjax: function(actionString, data, callback) {
 
 			// var test = {"currency":"MYR","users":{"ID":"100","user_login":"karen","user_pass":"$P$ByoXIIIQlPCQKY1S3I0TN5VcXXmsKt0","user_nicename":"karen","user_email":"karen00daniel@gmail.com","user_url":"","user_registered":"2017-09-11 09:46:13","user_modified_gmt":"0000-00-00 00:00:00","user_activation_key":"","user_status":"0","display_name":"karen"}};
